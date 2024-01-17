@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>社會信用分數</title>
+    <link href="resources/css/styles.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#home" onclick="showContent('home')">社會信用分數</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#scoreChange" onclick="showContent('scoreChange')">扣分</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#changeReason" onclick="showContent('changeReason')">扣分理由</a>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Content for each page -->
+    <div id="home" class="container mt-3">
+        <div style="position: relative; width: 100%; height: 0; padding-top: 50%;">
+            <canvas id="deductionChart"
+                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
+        </div>
+    </div>
+
+    <div id="scoreChange" class="container mt-3" style="display: none;">
+        <div class="container">
+            <!-- 輸入分數的表單 -->
+            <form id="scoreChangeForm" class="mt-4">
+                <div class="mb-3">
+                    <label for="name" class="form-label">人名：</label>
+                    <input type="text" id="username" name="username" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="reason" class="form-label">分數增減事由：</label>
+                    <input type="text" id="reason" name="reason" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="score" class="form-label">分數增減：</label>
+                    <input type="number" id="scoreChange" name="scoreChange" class="form-control" required>
+                </div>
+                <button type="button" onclick="insertScoreChange()" class="btn btn-primary">提交分數</button>
+            </form>
+        </div>
+    </div>  
+
+    <div id="changeReason" class="container mt-3" style="display: none;">
+        <!-- 扣分理由 -->
+        
+    </div>
+
+    <!-- Bootstrap JS (optional) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
