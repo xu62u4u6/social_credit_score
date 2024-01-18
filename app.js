@@ -4,11 +4,36 @@ const sqlite3 = require('sqlite3').verbose(); // Database
 const app = express();
 const port = 4000;
 
+app.get('/getJsonData', (req, res) => {
+    const db = new sqlite3.Database('score.db');
+
+    const sql = `
+        SELECT user_name, SUM(score_change) AS total_score
+        FROM score_changes
+        GROUP BY user_name;
+    `;
+
+    db.all(sql, [], (err, rows) => {
+        if (err) {
+            db.close();
+            res.status(500).json({ error: 'Internal Server Error' });
+            return;
+        }
+
+        const result = rows.reduce((acc, row) => {
+            acc[row.user_name] = row.total_score;
+            return acc;
+        }, {});
+
+        res.json(result);
+        db.close();
+    });
+});
+
 
 // Serve static files (e.g., your HTML page)
 app.use(express.static('public'));
 
-const db = new sqlite3.Database('score.db');
 
 app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname, 'index.html'));
