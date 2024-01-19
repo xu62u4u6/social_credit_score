@@ -44,8 +44,11 @@
             <!-- 輸入分數的表單 -->
             <form id="scoreChangeForm" class="mt-4">
                 <div class="mb-3">
-                    <label for="name" class="form-label">人名：</label>
-                    <input type="text" id="username" name="username" class="form-control" required>
+                    <!-- 一個下拉選單，動態生成使用者清單 -->
+                    <label for="usernameSelect" class="form-label">請選擇使用者：</label>
+                    <select id="usernameSelectScoreChange" class="form-control mb-3" name="username" onchange="getUserScoreChanges()">
+                        <option value="" selected disabled>- 請選擇使用者 -</option>
+                    </select>
                 </div>
 
                 <div class="mb-3">
@@ -63,8 +66,25 @@
     </div>  
 
     <div id="changeReason" class="container mt-3" style="display: none;">
-        <!-- 扣分理由 -->
-        
+        <!-- 在 body 區塊中加入一個容器，用於包裹表格 -->
+        <div class="container mt-4">
+
+            <!-- 一個下拉選單，動態生成使用者清單 -->
+            <select id="usernameSelectReason" class="form-control mb-3" onchange="getUserScoreChanges()">
+                <option value="" selected disabled>- 請選擇使用者 -</option>
+            </select>
+
+            <!-- 用來顯示分數增減資訊的 Bootstrap 表格 -->
+            <table id="userScoreChangesTable" class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>原因</th>
+                        <th>分數增減</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
     </div>
 
     <!-- Bootstrap JS (optional) -->

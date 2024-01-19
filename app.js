@@ -39,18 +39,32 @@ app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname, 'index.html'));
   });
 
-app.get('/getJsonData', (req, res) => {
-    // get data from db
-    res.json(jsonData);
+app.get('/userList', (req, res) => {
+    res.json(userList);
 });
 
-app.get("/insertScoreChange", (req, res) => {
-    // 假設你的請求參數中包含需要的信息，這裡使用 req.query
-    const { username, reason, score_change } = req.query;
-    const insert_sql = "INSERT INTO score_changes (username, reason, score_change) VALUES (?, ?, ?)";
-    console.log(req);
-    // 使用 prepared statement 防止 SQL 注入
-    db.run(insert_sql, [username, reason, score_change], function(err) {
+app.get('/user/:username', (req, res) => {
+    const { username } = req.params;
+
+    const db = new sqlite3.Database('score.db');
+    const sql = `
+        SELECT *
+        FROM score_changes
+        WHERE username = ?;
+    `;
+
+    db.all(sql, [username], (err, rows) => {
+        db.close();
+
+        if (err) {
+            res.status(500).json({ error: 'Internal Server Error' });
+            return;
+        }
+
+        res.json(rows);
+    });
+});
+
         if (err) {
             return res.status(500).json({ error: err.message });
         }

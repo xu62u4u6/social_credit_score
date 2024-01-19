@@ -67,13 +67,53 @@ function insertScoreChange() {
             return response.json();
         })
         .then(data => {
-            console.log(data);
-            // 在這裡處理成功回應
+function getUserScoreChanges() {
+    const username = document.getElementById('usernameSelectReason').value;
+
+    fetch(`/user/${username}`)
+        .then(response => response.json())
+        .then(data => {
+            // 將資訊顯示在頁面上的表格中
+            const userScoreChangesTable = document.getElementById('userScoreChangesTable');
+            const tbody = userScoreChangesTable.querySelector('tbody');
+            tbody.innerHTML = '';
+
+            data.forEach(scoreChange => {
+                // 將每筆資訊插入表格的新一行
+                const row = tbody.insertRow();
+                const cellReason = row.insertCell(0);
+                const cellScoreChange = row.insertCell(1);
+
+                // 設定每一格的內容
+                cellReason.textContent = scoreChange.reason;
+                cellScoreChange.textContent = scoreChange.score_change;
+            });
         })
         .catch(error => {
-            console.error('Error:', error);
-            // 在這裡處理錯誤
+            console.error('Error fetching data:', error);
         });
 }
 
 initializeScoreChart();
+// 獲取使用者清單，動態生成下拉選單
+fetch('/userList')
+    .then(response => response.json())
+    .then(userList => {
+        const usernameSelectScoreChange = document.getElementById('usernameSelectScoreChange');
+        const usernameSelectReason = document.getElementById('usernameSelectReason');
+        userList.forEach(username => {
+            const option = document.createElement('option');
+            option.value = username;
+            option.text = username;
+            usernameSelectScoreChange.add(option);
+        });
+        userList.forEach(username => {
+            const option = document.createElement('option');
+            option.value = username;
+            option.text = username;
+            usernameSelectReason.add(option);
+        });
+    })
+    .catch(error => {
+        console.error('Error fetching user list:', error);
+    });
