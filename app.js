@@ -8,9 +8,9 @@ app.get('/getJsonData', (req, res) => {
     const db = new sqlite3.Database('score.db');
 
     const sql = `
-        SELECT user_name, SUM(score_change) AS total_score
+        SELECT username, SUM(score_change) AS total_score
         FROM score_changes
-        GROUP BY user_name;
+        GROUP BY username;
     `;
 
     db.all(sql, [], (err, rows) => {
@@ -21,7 +21,7 @@ app.get('/getJsonData', (req, res) => {
         }
 
         const result = rows.reduce((acc, row) => {
-            acc[row.user_name] = row.total_score;
+            acc[row.username] = row.total_score;
             return acc;
         }, {});
 
