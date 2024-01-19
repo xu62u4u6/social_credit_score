@@ -78,17 +78,23 @@ app.get('/user/:username', (req, res) => {
     });
 });
 
+app.post("/insertScoreChange", (req, res) => {
+    const db = new sqlite3.Database('score.db');
+    const { username, reason, scoreChange } = req.body;
+    console.log(username, reason, scoreChange)
+    const insert_sql = "INSERT INTO score_changes (username , reason, score_change) VALUES (?, ?, ?)";
+    
+    db.run(insert_sql, [username, reason, scoreChange], function (err) {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
 
-        // 插入成功，現在可以關閉數據庫連接
         db.close();
+        console.log(username, reason, scoreChange, "inserted"); // 在這裡打印
 
         return res.status(200).json({ message: 'Score change inserted successfully' });
     });
 });
-
 
 
 app.listen(port, () => {

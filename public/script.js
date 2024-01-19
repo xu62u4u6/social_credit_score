@@ -56,9 +56,16 @@ function showContent(pageId) {
 function insertScoreChange() {
     const form = document.getElementById('scoreChangeForm');
     const formData = new FormData(form);
+
+    // 將 FormData 對象轉換為 JSON 對象
+    const json = {};
+    formData.forEach((value, key) => json[key] = value);
     fetch('/insertScoreChange', {
         method: 'POST',
-        body: formData
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(json)
     })
         .then(response => {
             if (!response.ok) {
@@ -67,6 +74,20 @@ function insertScoreChange() {
             return response.json();
         })
         .then(data => {
+        form.reset();
+        let message = '';
+        if (json.scoreChange < 0) {
+            message = `${json.username} 因為${json.reason} 扣 ${Math.abs(json.scoreChange)} 分`;
+        } else {
+            message = `${json.username} 因為${json.reason} 加${json.scoreChange} 分`;
+        }
+        alert(message);
+    })
+    .catch(error => {
+        alert('分數變更失敗！');
+    });
+}
+
 function getUserScoreChanges() {
     const username = document.getElementById('usernameSelectReason').value;
 
