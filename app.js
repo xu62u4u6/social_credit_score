@@ -69,7 +69,6 @@ app.get('/user/:username', (req, res) => {
     `;
 
     db.all(sql, [username], (err, rows) => {
-        db.close();
 
         if (err) {
             res.status(500).json({ error: 'Internal Server Error' });
@@ -77,6 +76,7 @@ app.get('/user/:username', (req, res) => {
         }
 
         res.json(rows);
+        db.close();
     });
 });
 
