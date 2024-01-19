@@ -40,7 +40,20 @@ app.get('/', function (req, res) {
   });
 
 app.get('/userList', (req, res) => {
+    const db = new sqlite3.Database('score.db'); 
+    const sql = 'SELECT username FROM users';
+
+    db.all(sql, [], (err, rows) => {
+        if (err) {
+            console.error('Error querying users:', err);
+            return res.status(500).json({ error: 'Error querying users' });
+        }
+        const userList = rows.map(row => row.username);
     res.json(userList);
+
+        // 關閉資料庫連接
+        db.close();
+    });
 });
 
 app.get('/user/:username', (req, res) => {
