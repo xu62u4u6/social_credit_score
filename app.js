@@ -2,7 +2,9 @@ const express = require('express');
 const path = require('path'); // 引入 path 模組
 const sqlite3 = require('sqlite3').verbose(); // Database
 const app = express();
-const port = 4000;
+
+app.use(express.json());
+app.use(express.static('public'));
 
 app.get('/getJsonData', (req, res) => {
     const db = new sqlite3.Database('score.db');
